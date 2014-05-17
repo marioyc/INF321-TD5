@@ -139,9 +139,21 @@ class TD56 {
 
 	static synchronized void intersectionSurfacePolyedre(ArbreSpheres arbre,
 			int nFaces, Vecteur3[] point, Vecteur3[] normale, FileTriangles file) {
-
-		// contenu a modifier
-
+		if(arbre.filsGauche == null){
+			boolean check = true;
+			
+			for(int i = 0;i < nFaces;++i){
+				if(arbre.triangle.a.moins(point[i]).produitScalaire(normale[i]) > 0) check = false;
+				if(arbre.triangle.b.moins(point[i]).produitScalaire(normale[i]) > 0) check = false;
+				if(arbre.triangle.c.moins(point[i]).produitScalaire(normale[i]) > 0) check = false;
+			}
+			
+			if(check)
+				file.insererTriangles(arbre.triangle, null, null, 0.0);
+		}else{
+			intersectionSurfacePolyedre(arbre.filsGauche, nFaces, point, normale, file);
+			intersectionSurfacePolyedre(arbre.filsDroit, nFaces, point, normale, file);
+		}
 	}
 
 	// **********
