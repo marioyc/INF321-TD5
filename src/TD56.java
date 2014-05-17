@@ -197,11 +197,14 @@ class TD56 {
 
 	static synchronized boolean intersectionSurfaceRayonVraiFaux(
 			ArbreSpheres arbre, Rayon rayon) {
-
-		// contenu a modifier
-
-		return false;
-
+		if(!rayon.intersectionSphere(arbre.sphere))
+			return false;
+		
+		if(arbre.filsGauche == null)
+			return rayon.intersectionTriangle(arbre.triangle.a, arbre.triangle.b, arbre.triangle.c, new Vecteur3());
+		
+		return intersectionSurfaceRayonVraiFaux(arbre.filsGauche, rayon) ||
+				intersectionSurfaceRayonVraiFaux(arbre.filsDroit, rayon);
 	}
 
 	// ***********
