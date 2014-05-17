@@ -213,9 +213,18 @@ class TD56 {
 
 	static synchronized void intersectionSurfaceRayon(ArbreSpheres arbre,
 			Rayon rayon, FileTriangles file) {
-
-		// contenu a modifier
-
+		if(!rayon.intersectionSphere(arbre.sphere))
+			return;
+		
+		if(arbre.filsGauche == null){
+			Vecteur3 i = new Vecteur3();
+			
+			if(rayon.intersectionTriangle(arbre.triangle.a, arbre.triangle.b, arbre.triangle.c, i))
+				file.insererTriangles(arbre.triangle,null,i,rayon.pointDeDepart.moins(i).norme());
+		}else{
+			intersectionSurfaceRayon(arbre.filsGauche, rayon, file);
+			intersectionSurfaceRayon(arbre.filsDroit, rayon, file);
+		}
 	}
 
 	// ***********
