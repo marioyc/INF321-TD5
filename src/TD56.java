@@ -142,7 +142,7 @@ class TD56 {
 		if(arbre.filsGauche == null){
 			boolean check = true;
 			
-			for(int i = 0;i < nFaces;++i){
+			for(int i = 0;i < nFaces && check;++i){
 				if(arbre.triangle.a.moins(point[i]).produitScalaire(normale[i]) > 0) check = false;
 				if(arbre.triangle.b.moins(point[i]).produitScalaire(normale[i]) > 0) check = false;
 				if(arbre.triangle.c.moins(point[i]).produitScalaire(normale[i]) > 0) check = false;
@@ -162,9 +162,33 @@ class TD56 {
 
 	static synchronized void minimumSurface(ArbreSpheres arbre,
 			Vecteur3 minimumCourant, Vecteur3 normale) {
+		Vecteur3 aux = arbre.sphere.centre.moins(normale.fois(arbre.sphere.rayon));
+		
+		if(aux.moins(minimumCourant).produitScalaire(normale) >= 0)
+			return;
+		
+		if(arbre.filsGauche == null){
+			if(arbre.triangle.a.moins(minimumCourant).produitScalaire(normale) < 0){
+				minimumCourant.x = arbre.triangle.a.x;
+				minimumCourant.y = arbre.triangle.a.y;
+				minimumCourant.z = arbre.triangle.a.z;
+			}
 
-		// contenu a modifier
+			if(arbre.triangle.b.moins(minimumCourant).produitScalaire(normale) < 0){
+				minimumCourant.x = arbre.triangle.b.x;
+				minimumCourant.y = arbre.triangle.b.y;
+				minimumCourant.z = arbre.triangle.b.z;
+			}
 
+			if(arbre.triangle.c.moins(minimumCourant).produitScalaire(normale) < 0){
+				minimumCourant.x = arbre.triangle.c.x;
+				minimumCourant.y = arbre.triangle.c.y;
+				minimumCourant.z = arbre.triangle.c.z;
+			}
+		}else{
+			minimumSurface(arbre.filsGauche, minimumCourant, normale);
+			minimumSurface(arbre.filsDroit, minimumCourant, normale);
+		}
 	}
 
 	// ***********
