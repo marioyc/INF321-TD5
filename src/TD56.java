@@ -259,10 +259,7 @@ class TD56 {
 	// ***********
 
 	static synchronized boolean intersectionSphereSphere(Sphere sA, Sphere sB) {
-
-		// contenu a modifier
-
-		return false;
+		return sA.centre.moins(sB.centre).norme() <= sA.rayon + sB.rayon;
 
 	}
 
