@@ -233,18 +233,25 @@ class TD56 {
 
 	static synchronized boolean intersectionSurfaceRayonVraiFauxLineaire(
 			Surface surface, Rayon rayon) {
-
-		// contenu a modifier
-
+		int n = surface.triangle.length;
+		
+		for(int i = 0;i < n;++i)
+			if(rayon.intersectionTriangle(surface.triangle[i].a, surface.triangle[i].b, surface.triangle[i].c, new Vecteur3()))
+				return true;
+		
 		return false;
-
 	}
 
 	static synchronized void intersectionSurfaceRayonLineaire(Surface surface,
 			Rayon rayon, FileTriangles file) {
-
-		// contenu a modifier
-
+		int n = surface.triangle.length;
+		
+		for(int i = 0;i < n;++i){
+			Vecteur3 p = new Vecteur3();
+			
+			if(rayon.intersectionTriangle(surface.triangle[i].a, surface.triangle[i].b, surface.triangle[i].c, p))
+				file.insererTriangles(surface.triangle[i], null, p, rayon.pointDeDepart.moins(p).norme());
+		}
 	}
 
 	// ***********
