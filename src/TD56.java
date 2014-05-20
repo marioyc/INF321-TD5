@@ -269,9 +269,24 @@ class TD56 {
 
 	static synchronized void intersectionSurfaceSurface(ArbreSpheres arbreA,
 			ArbreSpheres arbreB, FileTriangles file) {
-
-		// contenu a modifier
-
+		if(!intersectionSphereSphere(arbreA.sphere,arbreB.sphere))
+			return;
+		
+		if(arbreA.filsGauche == null && arbreB.filsGauche == null){
+			if(Triangle.intersectionTriangleTriangle(arbreA.triangle.a,arbreA.triangle.b,arbreA.triangle.c,arbreB.triangle.a,arbreB.triangle.b,arbreB.triangle.c))
+				file.insererTriangles(arbreA.triangle, arbreB.triangle, null, 0.0);
+		}else if(arbreA.filsGauche == null){
+			intersectionSurfaceSurface(arbreA,arbreB.filsGauche,file);
+			intersectionSurfaceSurface(arbreA,arbreB.filsDroit,file);
+		}else if(arbreB.filsGauche == null){
+			intersectionSurfaceSurface(arbreA.filsGauche,arbreB,file);
+			intersectionSurfaceSurface(arbreA.filsDroit,arbreB,file);
+		}else{
+			intersectionSurfaceSurface(arbreA.filsGauche,arbreB.filsGauche,file);
+			intersectionSurfaceSurface(arbreA.filsGauche,arbreB.filsDroit,file);
+			intersectionSurfaceSurface(arbreA.filsDroit,arbreB.filsGauche,file);
+			intersectionSurfaceSurface(arbreA.filsDroit,arbreB.filsDroit,file);
+		}
 	}
 
 	// ***********
